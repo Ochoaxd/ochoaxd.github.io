@@ -1,757 +1,379 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cartilla Interactiva - Manejo de Residuos Sólidos | La Loma de Bojayá</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
-        
-        body {
-            font-family: 'Poppins', sans-serif;
-        }
-        
-        .drag-item {
-            transition: all 0.3s ease;
-            cursor: grab;
-        }
-        
-        .drag-item:active {
-            cursor: grabbing;
-            transform: scale(1.05);
-        }
-        
-        .drop-zone {
-            transition: all 0.3s ease;
-        }
-        
-        .drop-zone.drag-over {
-            transform: scale(1.02);
-            box-shadow: 0 0 20px rgba(34, 197, 94, 0.5);
-        }
-        
-        .correct-drop {
-            animation: correctDrop 0.6s ease;
-        }
-        
-        .wrong-drop {
-            animation: wrongDrop 0.6s ease;
-        }
-        
-        @keyframes correctDrop {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); background-color: #dcfce7; }
-            100% { transform: scale(1); }
-        }
-        
-        @keyframes wrongDrop {
-            0% { transform: translateX(0); }
-            25% { transform: translateX(-10px); background-color: #fef2f2; }
-            75% { transform: translateX(10px); }
-            100% { transform: translateX(0); }
-        }
-        
-        .page-transition {
-            animation: fadeIn 0.5s ease-in-out;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .floating {
-            animation: float 3s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cartilla Interactiva - Manejo de Residuos Sólidos | La Loma de Bojayá</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="/css/style.css">
 </head>
 <body class="bg-gradient-to-br from-green-50 to-blue-50 min-h-screen">
+
     <!-- Header -->
-    <header class="bg-gradient-to-r from-green-600 to-green-700 text-white p-6 shadow-lg">
-        <div class="max-w-6xl mx-auto">
-            <h1 class="text-3xl md:text-4xl font-bold text-center mb-2">🌱 Cartilla Interactiva</h1>
-            <p class="text-xl text-center text-green-100">Estrategia Educativa para el Manejo de Residuos Sólidos</p>
-            <p class="text-lg text-center text-green-200 mt-2">La Loma de Bojayá - Chocó</p>
-        </div>
+<header class="bg-gradient-to-r from-green-600 to-green-700 text-white p-6 shadow-lg">
+    <div class="max-w-6xl mx-auto">
+    <h1 class="text-3xl md:text-4xl font-bold text-center mb-2">🌱 Cartilla Interactiva</h1>
+    <p class="text-xl text-center text-green-100">Estrategia Educativa para el Manejo de Residuos Sólidos</p>
+    <p class="text-lg text-center text-green-200 mt-2">La Loma de Bojayá - Chocó</p>
+    </div>
     </header>
 
-    <!-- Navigation -->
-    <nav class="bg-white shadow-md sticky top-0 z-40">
-        <div class="max-w-6xl mx-auto px-4">
-            <div class="flex justify-center space-x-2 md:space-x-4 py-4 overflow-x-auto">
-                <button onclick="showPage('intro')" class="nav-btn px-4 py-2 rounded-full bg-green-100 text-green-700 hover:bg-green-200 transition-colors whitespace-nowrap">
-                    🏠 Inicio
-                </button>
-                <button onclick="showPage('learn')" class="nav-btn px-4 py-2 rounded-full bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors whitespace-nowrap">
-                    📚 Aprender
-                </button>
-                <button onclick="showPage('game')" class="nav-btn px-4 py-2 rounded-full bg-purple-100 text-purple-700 hover:bg-purple-200 transition-colors whitespace-nowrap">
-                    🎮 Juego
-                </button>
-                <button onclick="showPage('tips')" class="nav-btn px-4 py-2 rounded-full bg-orange-100 text-orange-700 hover:bg-orange-200 transition-colors whitespace-nowrap">
-                    💡 Consejos
-                </button>
-                <button onclick="showPage('quiz')" class="nav-btn px-4 py-2 rounded-full bg-red-100 text-red-700 hover:bg-red-200 transition-colors whitespace-nowrap">
-                    🏆 Quiz
-                </button>
-            </div>
-        </div>
-    </nav>
+<!-- Navigation -->
+<nav class="bg-white shadow-md sticky top-0 z-40">
+    <div class="max-w-6xl mx-auto px-4">
+    <div class="flex justify-center space-x-2 md:space-x-4 py-4 overflow-x-auto">
+        <button onclick="showPage('intro')" class="nav-btn px-4 py-2 rounded-full bg-green-100 text-green-700 hover:bg-green-200 transition-colors whitespace-nowrap">🏠 Inicio</button>
+        <button onclick="showPage('learn')" class="nav-btn px-4 py-2 rounded-full bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors whitespace-nowrap">📚 Aprender</button>
+        <button onclick="showPage('game')" class="nav-btn px-4 py-2 rounded-full bg-purple-100 text-purple-700 hover:bg-purple-200 transition-colors whitespace-nowrap">🎮 Juego</button>
+        <button onclick="showPage('tips')" class="nav-btn px-4 py-2 rounded-full bg-orange-100 text-orange-700 hover:bg-orange-200 transition-colors whitespace-nowrap">💡 Consejos</button>
+        <button onclick="showPage('quiz')" class="nav-btn px-4 py-2 rounded-full bg-red-100 text-red-700 hover:bg-red-200 transition-colors whitespace-nowrap">🏆 Quiz</button>
+    </div>
+    </div>
+</nav>
 
-    <!-- Main Content -->
-    <main class="max-w-6xl mx-auto p-4 md:p-6">
+<!-- Main Content -->
+<main class="max-w-6xl mx-auto p-4 md:p-6">
         
-        <!-- Página de Introducción -->
-        <div id="intro-page" class="page page-transition">
-            <div class="text-center mb-8">
-                <div class="floating inline-block text-8xl mb-4">🌍</div>
-                <h2 class="text-4xl font-bold text-gray-800 mb-4">¡Bienvenidos a nuestra comunidad!</h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                    En La Loma de Bojayá, cuidamos nuestro hermoso territorio del Chocó aprendiendo a manejar correctamente nuestros residuos sólidos. 
-                    ¡Juntos podemos hacer la diferencia!
-                </p>
-            </div>
+    <!-- Página de Introducción -->
+    <div id="intro-page" class="page page-transition">
+        <div class="text-center mb-8">
+            <div class="floating inline-block text-8xl mb-4">🌍</div>
+            <h2 class="text-4xl font-bold text-gray-800 mb-4">¡Bienvenidos a nuestra comunidad!</h2>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                En La Loma de Bojayá, cuidamos nuestro hermoso territorio del Chocó aprendiendo a manejar correctamente nuestros residuos sólidos. 
+                ¡Juntos podemos hacer la diferencia!
+            </p>
+        </div>
 
-            <div class="grid md:grid-cols-3 gap-6 mb-8">
-                <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow">
-                    <div class="text-4xl mb-4 text-center">🌱</div>
-                    <h3 class="text-xl font-semibold text-gray-800 mb-2 text-center">Nuestro Objetivo</h3>
-                    <p class="text-gray-600 text-center">Proteger nuestro medio ambiente y mantener limpia nuestra comunidad</p>
-                </div>
-                
-                <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow">
-                    <div class="text-4xl mb-4 text-center">♻️</div>
-                    <h3 class="text-xl font-semibold text-gray-800 mb-2 text-center">Aprenderemos</h3>
-                    <p class="text-gray-600 text-center">A clasificar, reducir, reutilizar y reciclar nuestros residuos</p>
-                </div>
-                
-                <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow">
-                    <div class="text-4xl mb-4 text-center">🤝</div>
-                    <h3 class="text-xl font-semibold text-gray-800 mb-2 text-center">Juntos</h3>
-                    <p class="text-gray-600 text-center">Construiremos un futuro más sostenible para nuestras familias</p>
-                </div>
+        <div class="grid md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+                <div class="text-4xl mb-4 text-center">🌱</div>
+                <h3 class="text-xl font-semibold text-gray-800 mb-2 text-center">Nuestro Objetivo</h3>
+                <p class="text-gray-600 text-center">Proteger nuestro medio ambiente y mantener limpia nuestra comunidad</p>
             </div>
-
-            <div class="text-center">
-                <button onclick="showPage('learn')" class="bg-gradient-to-r from-green-500 to-green-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-green-600 hover:to-green-700 transform hover:scale-105 transition-all shadow-lg">
-                    ¡Comenzar a Aprender! 📚
-                </button>
+            
+            <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+                <div class="text-4xl mb-4 text-center">♻️</div>
+                <h3 class="text-xl font-semibold text-gray-800 mb-2 text-center">Aprenderemos</h3>
+                <p class="text-gray-600 text-center">A clasificar, reducir, reutilizar y reciclar nuestros residuos</p>
+            </div>
+            
+            <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+                <div class="text-4xl mb-4 text-center">🤝</div>
+                <h3 class="text-xl font-semibold text-gray-800 mb-2 text-center">Juntos</h3>
+                <p class="text-gray-600 text-center">Construiremos un futuro más sostenible para nuestras familias</p>
             </div>
         </div>
 
-        <!-- Página de Aprendizaje -->
-        <div id="learn-page" class="page hidden page-transition">
-            <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">📚 Tipos de Residuos y su Clasificación</h2>
-            
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <!-- Orgánicos -->
-                <div class="bg-green-100 rounded-xl p-6 shadow-lg">
-                    <div class="text-center mb-4">
-                        <div class="text-5xl mb-2">🥬</div>
-                        <h3 class="text-xl font-bold text-green-800">Orgánicos</h3>
-                        <div class="w-full h-4 bg-green-200 rounded-full mt-2">
-                            <div class="h-4 bg-green-600 rounded-full" style="width: 100%"></div>
-                        </div>
-                    </div>
-                    <ul class="text-sm text-green-700 space-y-1">
-                        <li>• Cáscaras de frutas</li>
-                        <li>• Restos de comida</li>
-                        <li>• Hojas y ramas</li>
-                        <li>• Residuos de jardín</li>
-                    </ul>
-                    <div class="mt-4 p-3 bg-green-200 rounded-lg">
-                        <p class="text-xs text-green-800"><strong>💡 Tip:</strong> Se pueden compostar para crear abono natural</p>
+        <div class="text-center">
+            <button onclick="showPage('learn')" class="bg-gradient-to-r from-green-500 to-green-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-green-600 hover:to-green-700 transform hover:scale-105 transition-all shadow-lg">
+                ¡Comenzar a Aprender! 📚
+            </button>
+        </div>
+    </div>
+
+    <!-- Página de Aprendizaje -->
+    <div id="learn-page" class="page hidden page-transition">
+        <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">📚 Tipos de Residuos y su Clasificación</h2>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Orgánicos -->
+            <div class="bg-green-100 rounded-xl p-6 shadow-lg">
+                <div class="text-center mb-4">
+                    <div class="text-5xl mb-2">🥬</div>
+                    <h3 class="text-xl font-bold text-green-800">Orgánicos</h3>
+                    <div class="w-full h-4 bg-green-200 rounded-full mt-2">
+                        <div class="h-4 bg-green-600 rounded-full" style="width: 100%"></div>
                     </div>
                 </div>
-
-                <!-- Reciclables -->
-                <div class="bg-blue-100 rounded-xl p-6 shadow-lg">
-                    <div class="text-center mb-4">
-                        <div class="text-5xl mb-2">♻️</div>
-                        <h3 class="text-xl font-bold text-blue-800">Reciclables</h3>
-                        <div class="w-full h-4 bg-blue-200 rounded-full mt-2">
-                            <div class="h-4 bg-blue-600 rounded-full" style="width: 100%"></div>
-                        </div>
-                    </div>
-                    <ul class="text-sm text-blue-700 space-y-1">
-                        <li>• Botellas plásticas</li>
-                        <li>• Papel y cartón</li>
-                        <li>• Latas de aluminio</li>
-                        <li>• Vidrio</li>
-                    </ul>
-                    <div class="mt-4 p-3 bg-blue-200 rounded-lg">
-                        <p class="text-xs text-blue-800"><strong>💡 Tip:</strong> Limpiar antes de reciclar</p>
-                    </div>
-                </div>
-
-                <!-- No Reciclables -->
-                <div class="bg-gray-100 rounded-xl p-6 shadow-lg">
-                    <div class="text-center mb-4">
-                        <div class="text-5xl mb-2">🗑️</div>
-                        <h3 class="text-xl font-bold text-gray-800">No Reciclables</h3>
-                        <div class="w-full h-4 bg-gray-200 rounded-full mt-2">
-                            <div class="h-4 bg-gray-600 rounded-full" style="width: 100%"></div>
-                        </div>
-                    </div>
-                    <ul class="text-sm text-gray-700 space-y-1">
-                        <li>• Pañales</li>
-                        <li>• Papel higiénico</li>
-                        <li>• Chicles</li>
-                        <li>• Cerámica rota</li>
-                    </ul>
-                    <div class="mt-4 p-3 bg-gray-200 rounded-lg">
-                        <p class="text-xs text-gray-800"><strong>💡 Tip:</strong> Reducir su uso cuando sea posible</p>
-                    </div>
-                </div>
-
-                <!-- Peligrosos -->
-                <div class="bg-red-100 rounded-xl p-6 shadow-lg">
-                    <div class="text-center mb-4">
-                        <div class="text-5xl mb-2">⚠️</div>
-                        <h3 class="text-xl font-bold text-red-800">Peligrosos</h3>
-                        <div class="w-full h-4 bg-red-200 rounded-full mt-2">
-                            <div class="h-4 bg-red-600 rounded-full" style="width: 100%"></div>
-                        </div>
-                    </div>
-                    <ul class="text-sm text-red-700 space-y-1">
-                        <li>• Pilas y baterías</li>
-                        <li>• Medicamentos</li>
-                        <li>• Productos químicos</li>
-                        <li>• Bombillas</li>
-                    </ul>
-                    <div class="mt-4 p-3 bg-red-200 rounded-lg">
-                        <p class="text-xs text-red-800"><strong>💡 Tip:</strong> Llevar a puntos especiales de recolección</p>
-                    </div>
+                <ul class="text-sm text-green-700 space-y-1">
+                    <li>• Cáscaras de frutas</li>
+                    <li>• Restos de comida</li>
+                    <li>• Hojas y ramas</li>
+                    <li>• Residuos de jardín</li>
+                </ul>
+                <div class="mt-4 p-3 bg-green-200 rounded-lg">
+                    <p class="text-xs text-green-800"><strong>💡 Tip:</strong> Se pueden compostar para crear abono natural</p>
                 </div>
             </div>
 
-            <div class="bg-white rounded-xl p-6 shadow-lg">
-                <h3 class="text-2xl font-bold text-gray-800 mb-4 text-center">🌟 Las 3 R's: Reducir, Reutilizar, Reciclar</h3>
-                <div class="grid md:grid-cols-3 gap-6">
-                    <div class="text-center">
-                        <div class="text-4xl mb-3">🔻</div>
-                        <h4 class="text-lg font-semibold text-gray-800 mb-2">Reducir</h4>
-                        <p class="text-gray-600 text-sm">Usar menos productos desechables y elegir opciones más duraderas</p>
+            <!-- Reciclables -->
+            <div class="bg-blue-100 rounded-xl p-6 shadow-lg">
+                <div class="text-center mb-4">
+                    <div class="text-5xl mb-2">♻️</div>
+                    <h3 class="text-xl font-bold text-blue-800">Reciclables</h3>
+                    <div class="w-full h-4 bg-blue-200 rounded-full mt-2">
+                        <div class="h-4 bg-blue-600 rounded-full" style="width: 100%"></div>
                     </div>
-                    <div class="text-center">
-                        <div class="text-4xl mb-3">🔄</div>
-                        <h4 class="text-lg font-semibold text-gray-800 mb-2">Reutilizar</h4>
-                        <p class="text-gray-600 text-sm">Darle una segunda vida a los objetos antes de desecharlos</p>
+                </div>
+                <ul class="text-sm text-blue-700 space-y-1">
+                    <li>• Botellas plásticas</li>
+                    <li>• Papel y cartón</li>
+                    <li>• Latas de aluminio</li>
+                    <li>• Vidrio</li>
+                </ul>
+                <div class="mt-4 p-3 bg-blue-200 rounded-lg">
+                    <p class="text-xs text-blue-800"><strong>💡 Tip:</strong> Limpiar antes de reciclar</p>
+                </div>
+            </div>
+
+            <!-- No Reciclables -->
+            <div class="bg-gray-100 rounded-xl p-6 shadow-lg">
+                <div class="text-center mb-4">
+                    <div class="text-5xl mb-2">🗑️</div>
+                    <h3 class="text-xl font-bold text-gray-800">No Reciclables</h3>
+                    <div class="w-full h-4 bg-gray-200 rounded-full mt-2">
+                        <div class="h-4 bg-gray-600 rounded-full" style="width: 100%"></div>
                     </div>
-                    <div class="text-center">
-                        <div class="text-4xl mb-3">♻️</div>
-                        <h4 class="text-lg font-semibold text-gray-800 mb-2">Reciclar</h4>
-                        <p class="text-gray-600 text-sm">Transformar los materiales en nuevos productos útiles</p>
+                </div>
+                <ul class="text-sm text-gray-700 space-y-1">
+                    <li>• Pañales</li>
+                    <li>• Papel higiénico</li>
+                    <li>• Chicles</li>
+                    <li>• Cerámica rota</li>
+                </ul>
+                <div class="mt-4 p-3 bg-gray-200 rounded-lg">
+                    <p class="text-xs text-gray-800"><strong>💡 Tip:</strong> Reducir su uso cuando sea posible</p>
+                </div>
+            </div>
+
+            <!-- Peligrosos -->
+            <div class="bg-red-100 rounded-xl p-6 shadow-lg">
+                <div class="text-center mb-4">
+                    <div class="text-5xl mb-2">⚠️</div>
+                    <h3 class="text-xl font-bold text-red-800">Peligrosos</h3>
+                    <div class="w-full h-4 bg-red-200 rounded-full mt-2">
+                        <div class="h-4 bg-red-600 rounded-full" style="width: 100%"></div>
                     </div>
+                </div>
+                <ul class="text-sm text-red-700 space-y-1">
+                    <li>• Pilas y baterías</li>
+                    <li>• Medicamentos</li>
+                    <li>• Productos químicos</li>
+                    <li>• Bombillas</li>
+                </ul>
+                <div class="mt-4 p-3 bg-red-200 rounded-lg">
+                    <p class="text-xs text-red-800"><strong>💡 Tip:</strong> Llevar a puntos especiales de recolección</p>
                 </div>
             </div>
         </div>
 
-        <!-- Página del Juego -->
-        <div id="game-page" class="page hidden page-transition">
-            <h2 class="text-3xl font-bold text-gray-800 mb-4 text-center">🎮 Juego de Clasificación</h2>
-            <p class="text-center text-gray-600 mb-8">Arrastra cada residuo al contenedor correcto. ¡Demuestra lo que has aprendido!</p>
-            
+        <div class="bg-white rounded-xl p-6 shadow-lg">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4 text-center">🌟 Las 3 R's: Reducir, Reutilizar, Reciclar</h3>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="text-center">
+                    <div class="text-4xl mb-3">🔻</div>
+                    <h4 class="text-lg font-semibold text-gray-800 mb-2">Reducir</h4>
+                    <p class="text-gray-600 text-sm">Usar menos productos desechables y elegir opciones más duraderas</p>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl mb-3">🔄</div>
+                    <h4 class="text-lg font-semibold text-gray-800 mb-2">Reutilizar</h4>
+                    <p class="text-gray-600 text-sm">Darle una segunda vida a los objetos antes de desecharlos</p>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl mb-3">♻️</div>
+                    <h4 class="text-lg font-semibold text-gray-800 mb-2">Reciclar</h4>
+                    <p class="text-gray-600 text-sm">Transformar los materiales en nuevos productos útiles</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Página del Juego -->
+    <div id="game-page" class="page hidden page-transition">
+        <h2 class="text-3xl font-bold text-gray-800 mb-4 text-center">🎮 Juego de Clasificación</h2>
+        <p class="text-center text-gray-600 mb-8">Arrastra cada residuo al contenedor correcto. ¡Demuestra lo que has aprendido!</p>
+        
+        <div class="mb-6 text-center">
+            <div class="inline-flex items-center space-x-4 bg-white rounded-full px-6 py-3 shadow-lg">
+                <span class="text-lg">Puntuación: <span id="score" class="font-bold text-green-600">0</span></span>
+                <span class="text-lg">Intentos: <span id="attempts" class="font-bold text-blue-600">0</span></span>
+            </div>
+        </div>
+
+        <!-- Contenedores -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div class="drop-zone bg-green-100 border-3 border-dashed border-green-300 rounded-xl p-4 text-center min-h-32" data-type="organico">
+                <div class="text-3xl mb-2">🥬</div>
+                <h3 class="font-semibold text-green-800">Orgánicos</h3>
+            </div>
+            <div class="drop-zone bg-blue-100 border-3 border-dashed border-blue-300 rounded-xl p-4 text-center min-h-32" data-type="reciclable">
+                <div class="text-3xl mb-2">♻️</div>
+                <h3 class="font-semibold text-blue-800">Reciclables</h3>
+            </div>
+            <div class="drop-zone bg-gray-100 border-3 border-dashed border-gray-300 rounded-xl p-4 text-center min-h-32" data-type="no-reciclable">
+                <div class="text-3xl mb-2">🗑️</div>
+                <h3 class="font-semibold text-gray-800">No Reciclables</h3>
+            </div>
+            <div class="drop-zone bg-red-100 border-3 border-dashed border-red-300 rounded-xl p-4 text-center min-h-32" data-type="peligroso">
+                <div class="text-3xl mb-2">⚠️</div>
+                <h3 class="font-semibold text-red-800">Peligrosos</h3>
+            </div>
+        </div>
+
+        <!-- Residuos para arrastrar -->
+        <div class="bg-white rounded-xl p-6 shadow-lg">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4 text-center">Arrastra estos residuos:</h3>
+            <div id="waste-items" class="grid grid-cols-3 md:grid-cols-6 gap-4">
+                <!-- Los elementos se generarán dinámicamente -->
+            </div>
+        </div>
+
+        <div class="text-center mt-6">
+            <button onclick="resetGame()" class="bg-gradient-to-r from-purple-500 to-purple-600 text-white px-6 py-3 rounded-full font-semibold hover:from-purple-600 hover:to-purple-700 transition-all">
+                🔄 Nuevo Juego
+            </button>
+        </div>
+    </div>
+
+    <!-- Página de Consejos -->
+    <div id="tips-page" class="page hidden page-transition">
+        <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">💡 Consejos Prácticos para La Loma de Bojayá</h2>
+        
+        <div class="grid md:grid-cols-2 gap-6">
+            <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-6 shadow-lg">
+                <h3 class="text-xl font-bold text-green-800 mb-4 flex items-center">
+                    🏠 En el Hogar
+                </h3>
+                <ul class="space-y-3 text-green-700">
+                    <li class="flex items-start">
+                        <span class="text-green-500 mr-2">•</span>
+                        <span>Separa los residuos desde la cocina usando diferentes recipientes</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-green-500 mr-2">•</span>
+                        <span>Lava los envases antes de reciclarlos</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-green-500 mr-2">•</span>
+                        <span>Usa los residuos orgánicos para hacer compost en tu patio</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-green-500 mr-2">•</span>
+                        <span>Reutiliza frascos y botellas para almacenar alimentos</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-6 shadow-lg">
+                <h3 class="text-xl font-bold text-blue-800 mb-4 flex items-center">
+                    🌊 Protegiendo Nuestros Ríos
+                </h3>
+                <ul class="space-y-3 text-blue-700">
+                    <li class="flex items-start">
+                        <span class="text-blue-500 mr-2">•</span>
+                        <span>Nunca arrojes basura a los ríos o quebradas</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-blue-500 mr-2">•</span>
+                        <span>Evita usar productos químicos cerca del agua</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-blue-500 mr-2">•</span>
+                        <span>Organiza jornadas de limpieza comunitaria</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-blue-500 mr-2">•</span>
+                        <span>Enseña a los niños a cuidar el agua</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-6 shadow-lg">
+                <h3 class="text-xl font-bold text-orange-800 mb-4 flex items-center">
+                    🤝 En la Comunidad
+                </h3>
+                <ul class="space-y-3 text-orange-700">
+                    <li class="flex items-start">
+                        <span class="text-orange-500 mr-2">•</span>
+                        <span>Participa en los días de recolección programados</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-orange-500 mr-2">•</span>
+                        <span>Comparte estos conocimientos con tus vecinos</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-orange-500 mr-2">•</span>
+                        <span>Crea un punto de acopio comunitario</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-orange-500 mr-2">•</span>
+                        <span>Organiza talleres de reutilización creativa</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-6 shadow-lg">
+                <h3 class="text-xl font-bold text-purple-800 mb-4 flex items-center">
+                    💰 Oportunidades Económicas
+                </h3>
+                <ul class="space-y-3 text-purple-700">
+                    <li class="flex items-start">
+                        <span class="text-purple-500 mr-2">•</span>
+                        <span>Vende materiales reciclables a centros de acopio</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-purple-500 mr-2">•</span>
+                        <span>Crea productos artesanales con materiales reutilizados</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-purple-500 mr-2">•</span>
+                        <span>Ofrece servicios de compostaje a vecinos</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-purple-500 mr-2">•</span>
+                        <span>Forma cooperativas de recicladores</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="mt-8 bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-xl p-6 text-center">
+            <h3 class="text-2xl font-bold mb-4">🌟 ¡Recuerda!</h3>
+            <p class="text-lg">Cada pequeña acción cuenta. Al cuidar nuestros residuos, protegemos la biodiversidad única del Chocó y garantizamos un futuro mejor para nuestras familias.</p>
+        </div>
+    </div>
+
+    <!-- Página del Quiz -->
+    <div id="quiz-page" class="page hidden page-transition">
+        <h2 class="text-3xl font-bold text-gray-800 mb-4 text-center">🏆 Quiz: ¿Qué tanto sabes?</h2>
+        <p class="text-center text-gray-600 mb-8">Pon a prueba tus conocimientos sobre el manejo de residuos sólidos</p>
+        
+        <div class="max-w-2xl mx-auto">
             <div class="mb-6 text-center">
                 <div class="inline-flex items-center space-x-4 bg-white rounded-full px-6 py-3 shadow-lg">
-                    <span class="text-lg">Puntuación: <span id="score" class="font-bold text-green-600">0</span></span>
-                    <span class="text-lg">Intentos: <span id="attempts" class="font-bold text-blue-600">0</span></span>
+                    <span class="text-lg">Pregunta: <span id="current-question" class="font-bold text-blue-600">1</span> de <span id="total-questions" class="font-bold text-blue-600">5</span></span>
+                    <span class="text-lg">Puntos: <span id="quiz-score" class="font-bold text-green-600">0</span></span>
                 </div>
             </div>
 
-            <!-- Contenedores -->
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                <div class="drop-zone bg-green-100 border-3 border-dashed border-green-300 rounded-xl p-4 text-center min-h-32" data-type="organico">
-                    <div class="text-3xl mb-2">🥬</div>
-                    <h3 class="font-semibold text-green-800">Orgánicos</h3>
-                </div>
-                <div class="drop-zone bg-blue-100 border-3 border-dashed border-blue-300 rounded-xl p-4 text-center min-h-32" data-type="reciclable">
-                    <div class="text-3xl mb-2">♻️</div>
-                    <h3 class="font-semibold text-blue-800">Reciclables</h3>
-                </div>
-                <div class="drop-zone bg-gray-100 border-3 border-dashed border-gray-300 rounded-xl p-4 text-center min-h-32" data-type="no-reciclable">
-                    <div class="text-3xl mb-2">🗑️</div>
-                    <h3 class="font-semibold text-gray-800">No Reciclables</h3>
-                </div>
-                <div class="drop-zone bg-red-100 border-3 border-dashed border-red-300 rounded-xl p-4 text-center min-h-32" data-type="peligroso">
-                    <div class="text-3xl mb-2">⚠️</div>
-                    <h3 class="font-semibold text-red-800">Peligrosos</h3>
-                </div>
+            <div id="quiz-container" class="bg-white rounded-xl p-6 shadow-lg">
+                <!-- Las preguntas se generarán dinámicamente -->
             </div>
 
-            <!-- Residuos para arrastrar -->
-            <div class="bg-white rounded-xl p-6 shadow-lg">
-                <h3 class="text-xl font-semibold text-gray-800 mb-4 text-center">Arrastra estos residuos:</h3>
-                <div id="waste-items" class="grid grid-cols-3 md:grid-cols-6 gap-4">
-                    <!-- Los elementos se generarán dinámicamente -->
-                </div>
-            </div>
-
-            <div class="text-center mt-6">
-                <button onclick="resetGame()" class="bg-gradient-to-r from-purple-500 to-purple-600 text-white px-6 py-3 rounded-full font-semibold hover:from-purple-600 hover:to-purple-700 transition-all">
-                    🔄 Nuevo Juego
+            <div id="quiz-result" class="hidden bg-white rounded-xl p-6 shadow-lg text-center">
+                <div class="text-6xl mb-4">🎉</div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-4">¡Quiz Completado!</h3>
+                <p class="text-xl text-gray-600 mb-4">Tu puntuación final: <span id="final-score" class="font-bold text-green-600"></span> de 5</p>
+                <div id="quiz-message" class="text-lg text-gray-700 mb-6"></div>
+                <button onclick="restartQuiz()" class="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-full font-semibold hover:from-green-600 hover:to-green-700 transition-all">
+                    🔄 Intentar de Nuevo
                 </button>
             </div>
         </div>
+    </div>
+</main>
 
-        <!-- Página de Consejos -->
-        <div id="tips-page" class="page hidden page-transition">
-            <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">💡 Consejos Prácticos para La Loma de Bojayá</h2>
-            
-            <div class="grid md:grid-cols-2 gap-6">
-                <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-6 shadow-lg">
-                    <h3 class="text-xl font-bold text-green-800 mb-4 flex items-center">
-                        🏠 En el Hogar
-                    </h3>
-                    <ul class="space-y-3 text-green-700">
-                        <li class="flex items-start">
-                            <span class="text-green-500 mr-2">•</span>
-                            <span>Separa los residuos desde la cocina usando diferentes recipientes</span>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-green-500 mr-2">•</span>
-                            <span>Lava los envases antes de reciclarlos</span>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-green-500 mr-2">•</span>
-                            <span>Usa los residuos orgánicos para hacer compost en tu patio</span>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-green-500 mr-2">•</span>
-                            <span>Reutiliza frascos y botellas para almacenar alimentos</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-6 shadow-lg">
-                    <h3 class="text-xl font-bold text-blue-800 mb-4 flex items-center">
-                        🌊 Protegiendo Nuestros Ríos
-                    </h3>
-                    <ul class="space-y-3 text-blue-700">
-                        <li class="flex items-start">
-                            <span class="text-blue-500 mr-2">•</span>
-                            <span>Nunca arrojes basura a los ríos o quebradas</span>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-blue-500 mr-2">•</span>
-                            <span>Evita usar productos químicos cerca del agua</span>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-blue-500 mr-2">•</span>
-                            <span>Organiza jornadas de limpieza comunitaria</span>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-blue-500 mr-2">•</span>
-                            <span>Enseña a los niños a cuidar el agua</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-6 shadow-lg">
-                    <h3 class="text-xl font-bold text-orange-800 mb-4 flex items-center">
-                        🤝 En la Comunidad
-                    </h3>
-                    <ul class="space-y-3 text-orange-700">
-                        <li class="flex items-start">
-                            <span class="text-orange-500 mr-2">•</span>
-                            <span>Participa en los días de recolección programados</span>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-orange-500 mr-2">•</span>
-                            <span>Comparte estos conocimientos con tus vecinos</span>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-orange-500 mr-2">•</span>
-                            <span>Crea un punto de acopio comunitario</span>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-orange-500 mr-2">•</span>
-                            <span>Organiza talleres de reutilización creativa</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-6 shadow-lg">
-                    <h3 class="text-xl font-bold text-purple-800 mb-4 flex items-center">
-                        💰 Oportunidades Económicas
-                    </h3>
-                    <ul class="space-y-3 text-purple-700">
-                        <li class="flex items-start">
-                            <span class="text-purple-500 mr-2">•</span>
-                            <span>Vende materiales reciclables a centros de acopio</span>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-purple-500 mr-2">•</span>
-                            <span>Crea productos artesanales con materiales reutilizados</span>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-purple-500 mr-2">•</span>
-                            <span>Ofrece servicios de compostaje a vecinos</span>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-purple-500 mr-2">•</span>
-                            <span>Forma cooperativas de recicladores</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="mt-8 bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-xl p-6 text-center">
-                <h3 class="text-2xl font-bold mb-4">🌟 ¡Recuerda!</h3>
-                <p class="text-lg">Cada pequeña acción cuenta. Al cuidar nuestros residuos, protegemos la biodiversidad única del Chocó y garantizamos un futuro mejor para nuestras familias.</p>
-            </div>
-        </div>
-
-        <!-- Página del Quiz -->
-        <div id="quiz-page" class="page hidden page-transition">
-            <h2 class="text-3xl font-bold text-gray-800 mb-4 text-center">🏆 Quiz: ¿Qué tanto sabes?</h2>
-            <p class="text-center text-gray-600 mb-8">Pon a prueba tus conocimientos sobre el manejo de residuos sólidos</p>
-            
-            <div class="max-w-2xl mx-auto">
-                <div class="mb-6 text-center">
-                    <div class="inline-flex items-center space-x-4 bg-white rounded-full px-6 py-3 shadow-lg">
-                        <span class="text-lg">Pregunta: <span id="current-question" class="font-bold text-blue-600">1</span> de <span id="total-questions" class="font-bold text-blue-600">5</span></span>
-                        <span class="text-lg">Puntos: <span id="quiz-score" class="font-bold text-green-600">0</span></span>
-                    </div>
-                </div>
-
-                <div id="quiz-container" class="bg-white rounded-xl p-6 shadow-lg">
-                    <!-- Las preguntas se generarán dinámicamente -->
-                </div>
-
-                <div id="quiz-result" class="hidden bg-white rounded-xl p-6 shadow-lg text-center">
-                    <div class="text-6xl mb-4">🎉</div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4">¡Quiz Completado!</h3>
-                    <p class="text-xl text-gray-600 mb-4">Tu puntuación final: <span id="final-score" class="font-bold text-green-600"></span> de 5</p>
-                    <div id="quiz-message" class="text-lg text-gray-700 mb-6"></div>
-                    <button onclick="restartQuiz()" class="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-full font-semibold hover:from-green-600 hover:to-green-700 transition-all">
-                        🔄 Intentar de Nuevo
-                    </button>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white p-6 mt-12">
-        <div class="max-w-6xl mx-auto text-center">
-            <p class="text-lg mb-2">🌱 Cartilla Educativa - La Loma de Bojayá</p>
-            <p class="text-gray-400">Cuidando nuestro territorio, construyendo nuestro futuro</p>
-            <div class="mt-4 text-2xl">🇨🇴 Chocó - Colombia</div>
-        </div>
+<!-- Footer -->
+<footer class="bg-gray-800 text-white p-6 mt-12">
+    <div class="max-w-6xl mx-auto text-center">
+        <p class="text-lg mb-2">🌱 Cartilla Educativa - La Loma de Bojayá</p>
+        <p class="text-gray-400">Cuidando nuestro territorio, construyendo nuestro futuro</p>
+        <div class="mt-4 text-2xl">🇨🇴 Chocó - Colombia</div>
+    </div>
     </footer>
 
-    <script>
-        // Variables globales
-        let currentPage = 'intro';
-        let gameScore = 0;
-        let gameAttempts = 0;
-        let quizScore = 0;
-        let currentQuizQuestion = 0;
-
-        // Datos del juego
-        const wasteItems = [
-            { name: 'Cáscara de plátano', emoji: '🍌', type: 'organico' },
-            { name: 'Botella plástica', emoji: '🍼', type: 'reciclable' },
-            { name: 'Pañal', emoji: '👶', type: 'no-reciclable' },
-            { name: 'Pila', emoji: '🔋', type: 'peligroso' },
-            { name: 'Papel', emoji: '📄', type: 'reciclable' },
-            { name: 'Restos de comida', emoji: '🍽️', type: 'organico' },
-            { name: 'Lata de aluminio', emoji: '🥤', type: 'reciclable' },
-            { name: 'Medicamento', emoji: '💊', type: 'peligroso' },
-            { name: 'Hojas secas', emoji: '🍂', type: 'organico' },
-            { name: 'Chicle', emoji: '🍬', type: 'no-reciclable' },
-            { name: 'Vidrio', emoji: '🍶', type: 'reciclable' },
-            { name: 'Bombilla', emoji: '💡', type: 'peligroso' }
-        ];
-
-        // Preguntas del quiz
-        const quizQuestions = [
-            {
-                question: "¿Cuál de estos residuos es orgánico?",
-                options: ["Botella plástica", "Cáscara de naranja", "Pila", "Papel higiénico"],
-                correct: 1,
-                explanation: "Las cáscaras de frutas son residuos orgánicos que se pueden compostar."
-            },
-            {
-                question: "¿Qué significa la primera R de las 3 R's?",
-                options: ["Reciclar", "Reducir", "Reutilizar", "Renovar"],
-                correct: 1,
-                explanation: "Reducir significa usar menos productos desechables y elegir opciones más duraderas."
-            },
-            {
-                question: "¿Dónde NO debes arrojar los residuos?",
-                options: ["En el contenedor", "En el río", "En el punto de acopio", "En la bolsa de basura"],
-                correct: 1,
-                explanation: "Nunca debemos arrojar basura a los ríos porque contamina el agua y daña la vida acuática."
-            },
-            {
-                question: "¿Qué tipo de residuo es una pila usada?",
-                options: ["Orgánico", "Reciclable", "Peligroso", "No reciclable"],
-                correct: 2,
-                explanation: "Las pilas son residuos peligrosos que deben llevarse a puntos especiales de recolección."
-            },
-            {
-                question: "¿Cuál es un beneficio del compostaje?",
-                options: ["Contamina el suelo", "Crea abono natural", "Atrae plagas", "Ocupa mucho espacio"],
-                correct: 1,
-                explanation: "El compostaje transforma los residuos orgánicos en abono natural para las plantas."
-            }
-        ];
-
-        // Funciones de navegación
-        function showPage(pageId) {
-            // Ocultar todas las páginas
-            document.querySelectorAll('.page').forEach(page => {
-                page.classList.add('hidden');
-            });
-            
-            // Mostrar la página seleccionada
-            document.getElementById(pageId + '-page').classList.remove('hidden');
-            
-            // Actualizar navegación
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('bg-green-500', 'text-white');
-                btn.classList.add('bg-gray-100', 'text-gray-700');
-            });
-            
-            currentPage = pageId;
-            
-            // Inicializar contenido específico de la página
-            if (pageId === 'game') {
-                initGame();
-            } else if (pageId === 'quiz') {
-                initQuiz();
-            }
-        }
-
-        // Funciones del juego
-        function initGame() {
-            gameScore = 0;
-            gameAttempts = 0;
-            updateGameScore();
-            generateWasteItems();
-            setupDragAndDrop();
-        }
-
-        function generateWasteItems() {
-            const container = document.getElementById('waste-items');
-            container.innerHTML = '';
-            
-            // Seleccionar 6 elementos aleatorios
-            const selectedItems = wasteItems.sort(() => 0.5 - Math.random()).slice(0, 6);
-            
-            selectedItems.forEach((item, index) => {
-                const itemElement = document.createElement('div');
-                itemElement.className = 'drag-item bg-white rounded-lg p-4 shadow-md cursor-grab text-center border-2 border-gray-200 hover:border-gray-300 transition-colors';
-                itemElement.draggable = true;
-                itemElement.dataset.type = item.type;
-                itemElement.dataset.id = index;
-                itemElement.innerHTML = `
-                    <div class="text-3xl mb-2">${item.emoji}</div>
-                    <p class="text-sm font-medium text-gray-700">${item.name}</p>
-                `;
-                container.appendChild(itemElement);
-            });
-        }
-
-        function setupDragAndDrop() {
-            // Configurar elementos arrastrables
-            document.querySelectorAll('.drag-item').forEach(item => {
-                item.addEventListener('dragstart', handleDragStart);
-                item.addEventListener('dragend', handleDragEnd);
-            });
-
-            // Configurar zonas de soltar
-            document.querySelectorAll('.drop-zone').forEach(zone => {
-                zone.addEventListener('dragover', handleDragOver);
-                zone.addEventListener('dragenter', handleDragEnter);
-                zone.addEventListener('dragleave', handleDragLeave);
-                zone.addEventListener('drop', handleDrop);
-            });
-        }
-
-        function handleDragStart(e) {
-            e.dataTransfer.setData('text/plain', e.target.dataset.id);
-            e.target.style.opacity = '0.5';
-        }
-
-        function handleDragEnd(e) {
-            e.target.style.opacity = '1';
-        }
-
-        function handleDragOver(e) {
-            e.preventDefault();
-        }
-
-        function handleDragEnter(e) {
-            e.preventDefault();
-            e.target.classList.add('drag-over');
-        }
-
-        function handleDragLeave(e) {
-            e.target.classList.remove('drag-over');
-        }
-
-        function handleDrop(e) {
-            e.preventDefault();
-            e.target.classList.remove('drag-over');
-            
-            const draggedId = e.dataTransfer.getData('text/plain');
-            const draggedElement = document.querySelector(`[data-id="${draggedId}"]`);
-            const dropZone = e.target.closest('.drop-zone');
-            
-            if (draggedElement && dropZone) {
-                gameAttempts++;
-                
-                if (draggedElement.dataset.type === dropZone.dataset.type) {
-                    // Respuesta correcta
-                    gameScore++;
-                    dropZone.classList.add('correct-drop');
-                    draggedElement.remove();
-                    
-                    setTimeout(() => {
-                        dropZone.classList.remove('correct-drop');
-                    }, 600);
-                    
-                    // Verificar si el juego terminó
-                    if (document.querySelectorAll('.drag-item').length === 1) {
-                        setTimeout(() => {
-                            alert(`¡Excelente! Has completado el juego con ${gameScore} de ${gameAttempts} intentos correctos.`);
-                            initGame();
-                        }, 700);
-                    }
-                } else {
-                    // Respuesta incorrecta
-                    dropZone.classList.add('wrong-drop');
-                    setTimeout(() => {
-                        dropZone.classList.remove('wrong-drop');
-                    }, 600);
-                }
-                
-                updateGameScore();
-            }
-        }
-
-        function updateGameScore() {
-            document.getElementById('score').textContent = gameScore;
-            document.getElementById('attempts').textContent = gameAttempts;
-        }
-
-        function resetGame() {
-            initGame();
-        }
-
-        // Funciones del quiz
-        function initQuiz() {
-            quizScore = 0;
-            currentQuizQuestion = 0;
-            document.getElementById('quiz-result').classList.add('hidden');
-            document.getElementById('quiz-container').classList.remove('hidden');
-            showQuizQuestion();
-        }
-
-        function showQuizQuestion() {
-            const question = quizQuestions[currentQuizQuestion];
-            const container = document.getElementById('quiz-container');
-            
-            document.getElementById('current-question').textContent = currentQuizQuestion + 1;
-            document.getElementById('total-questions').textContent = quizQuestions.length;
-            document.getElementById('quiz-score').textContent = quizScore;
-            
-            container.innerHTML = `
-                <h3 class="text-xl font-semibold text-gray-800 mb-6">${question.question}</h3>
-                <div class="space-y-3">
-                    ${question.options.map((option, index) => `
-                        <button onclick="selectAnswer(${index})" class="quiz-option w-full text-left p-4 rounded-lg border-2 border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-colors">
-                            ${option}
-                        </button>
-                    `).join('')}
-                </div>
-            `;
-        }
-
-        function selectAnswer(selectedIndex) {
-            const question = quizQuestions[currentQuizQuestion];
-            const options = document.querySelectorAll('.quiz-option');
-            
-            // Deshabilitar todas las opciones
-            options.forEach(option => option.disabled = true);
-            
-            // Mostrar respuesta correcta e incorrecta
-            options.forEach((option, index) => {
-                if (index === question.correct) {
-                    option.classList.add('bg-green-100', 'border-green-500', 'text-green-800');
-                } else if (index === selectedIndex && index !== question.correct) {
-                    option.classList.add('bg-red-100', 'border-red-500', 'text-red-800');
-                }
-            });
-            
-            // Actualizar puntuación
-            if (selectedIndex === question.correct) {
-                quizScore++;
-            }
-            
-            // Mostrar explicación
-            setTimeout(() => {
-                const container = document.getElementById('quiz-container');
-                container.innerHTML += `
-                    <div class="mt-6 p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500">
-                        <p class="text-blue-800"><strong>Explicación:</strong> ${question.explanation}</p>
-                    </div>
-                    <div class="text-center mt-6">
-                        <button onclick="nextQuestion()" class="bg-blue-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-600 transition-colors">
-                            ${currentQuizQuestion < quizQuestions.length - 1 ? 'Siguiente Pregunta' : 'Ver Resultados'} →
-                        </button>
-                    </div>
-                `;
-            }, 1000);
-        }
-
-        function nextQuestion() {
-            currentQuizQuestion++;
-            
-            if (currentQuizQuestion < quizQuestions.length) {
-                showQuizQuestion();
-            } else {
-                showQuizResults();
-            }
-        }
-
-        function showQuizResults() {
-            document.getElementById('quiz-container').classList.add('hidden');
-            document.getElementById('quiz-result').classList.remove('hidden');
-            
-            document.getElementById('final-score').textContent = quizScore;
-            
-            const messageElement = document.getElementById('quiz-message');
-            let message = '';
-            
-            if (quizScore === 5) {
-                message = '¡Perfecto! Eres un experto en manejo de residuos sólidos. 🌟';
-            } else if (quizScore >= 3) {
-                message = '¡Muy bien! Tienes buenos conocimientos, sigue aprendiendo. 👍';
-            } else {
-                message = 'Puedes mejorar. Te recomendamos revisar la sección de aprendizaje. 📚';
-            }
-            
-            messageElement.textContent = message;
-        }
-
-        function restartQuiz() {
-            initQuiz();
-        }
-
-        // Inicializar la aplicación
-        document.addEventListener('DOMContentLoaded', function() {
-            showPage('intro');
-        });
-    </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9826be1a00a2e564',t:'MTc1ODQyODEzOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+    <script src="/js/script.js"></script>
+</body>
 </html>
