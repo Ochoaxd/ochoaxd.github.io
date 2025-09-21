@@ -146,30 +146,30 @@ function selectAnswer(selectedIndex) {
   if (selectedIndex === question.correct) quizScore++;
   setTimeout(() => {
     document.getElementById('quiz-container').innerHTML += `
-        <div class="mt-6 p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+      <div class="mt-6 p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500">
         <p class="text-blue-800"><strong>Explicación:</strong> ${question.explanation}</p>
-        </div>
-        <div class="text-center mt-6">
+      </div>
+      <div class="text-center mt-6">
         <button onclick="nextQuestion()" class="bg-blue-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-600 transition-colors">
-            ${currentQuizQuestion < quizQuestions.length - 1 ? 'Siguiente Pregunta' : 'Ver Resultados'} →
+          ${currentQuizQuestion < quizQuestions.length - 1 ? 'Siguiente Pregunta' : 'Ver Resultados'} →
         </button>
-        </div>
+      </div>
     `;
-    }, 1000);
+  }, 1000);
 }
 function nextQuestion() {
-    currentQuizQuestion++;
-    if (currentQuizQuestion < quizQuestions.length) showQuizQuestion();
-    else showQuizResults();
+  currentQuizQuestion++;
+  if (currentQuizQuestion < quizQuestions.length) showQuizQuestion();
+  else showQuizResults();
 }
 function showQuizResults() {
-    document.getElementById('quiz-container').classList.add('hidden');
-    document.getElementById('quiz-result').classList.remove('hidden');
-    document.getElementById('final-score').textContent = quizScore;
-    const msg = quizScore === 5 ? '¡Perfecto! Eres un experto en manejo de residuos sólidos. 🌟' :
-            quizScore >= 3 ? '¡Muy bien! Tienes buenos conocimientos, sigue aprendiendo. 👍' :
-            'Puedes mejorar. Te recomendamos revisar la sección de aprendizaje. 📚';
-    document.getElementById('quiz-message').textContent = msg;
+  document.getElementById('quiz-container').classList.add('hidden');
+  document.getElementById('quiz-result').classList.remove('hidden');
+  document.getElementById('final-score').textContent = quizScore;
+  const msg = quizScore === 5 ? '¡Perfecto! Eres un experto en manejo de residuos sólidos. 🌟' :
+              quizScore >= 3 ? '¡Muy bien! Tienes buenos conocimientos, sigue aprendiendo. 👍' :
+              'Puedes mejorar. Te recomendamos revisar la sección de aprendizaje. 📚';
+  document.getElementById('quiz-message').textContent = msg;
 }
 function restartQuiz() { initQuiz(); }
 
