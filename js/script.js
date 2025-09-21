@@ -64,18 +64,77 @@ function generateWasteItems() {
 
 // 👉 Aquí cambiamos a interact.js
 function setupDragAndDrop() {
-  interact('.drag-item').draggable({
-    listeners: {
-      move(event) {
-        const target = event.target;
-        const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
-        const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
-        target.style.transform = `translate(${x}px, ${y}px)`;
-        target.setAttribute('data-x', x);
-        target.setAttribute('data-y', y);
+  // Detectar si es móvil
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+  if (!isMobile) {
+    // ---------------- PC: usar drag & drop nativo ----------------
+    document.querySelectorAll('.drag-item').forEach(item => {
+      item.setAttribute('draggable', true);
+      item.addEventListener('dragstart', handleDragStart);
+      item.addEventListener('dragend', handleDragEnd);
+    });
+
+    document.querySelectorAll('.drop-zone').forEach(zone => {
+      zone.addEventListener('dragover', e => e.preventDefault());
+      zone.addEventListener('dragenter', e => e.target.classList.add('drag-over'));
+      zone.addEventListener('dragleave', e => e.target.classList.remove('drag-over'));
+      zone.addEventListener('drop', handleDrop);
+    });
+  } else {
+    // ---------------- Móvil: usar interact.js ----------------
+    interact('.drag-item').draggable({
+      listeners: {
+        move(event) {
+          const target = event.target;
+          const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+          const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+          target.style.transform = `translate(${x}px, ${y}px)`;
+          target.setAttribute('data-x', x);
+          target.setAttribute('data-y', y);
+        }
       }
-    }
-  });
+    });
+
+    interact('.drop-zone').dropzone({
+      accept: '.drag-item',
+      overlap: 0.3,
+      ondrop(event) {
+        const draggedElement = event.relatedTarget;
+        const dropZone = event.target;
+
+        gameAttempts++;
+
+        if (draggedElement.dataset.type === dropZone.dataset.type) {
+          // ✅ Correcto
+          gameScore++;
+          dropZone.classList.add('correct-drop');
+          draggedElement.remove();
+
+          setTimeout(() => dropZone.classList.remove('correct-drop'), 600);
+
+          if (document.querySelectorAll('.drag-item').length === 0) {
+            setTimeout(() => {
+              alert(`¡Excelente! Has completado el juego con ${gameScore} de ${gameAttempts} intentos correctos.`);
+              initGame();
+            }, 700);
+          }
+        } else {
+          // ❌ Incorrecto
+          dropZone.classList.add('wrong-drop');
+          setTimeout(() => dropZone.classList.remove('wrong-drop'), 600);
+
+          // Regresar a la posición inicial
+          draggedElement.style.transform = 'translate(0px, 0px)';
+          draggedElement.removeAttribute('data-x');
+          draggedElement.removeAttribute('data-y');
+        }
+
+        updateGameScore();
+      }
+    });
+  }
+
 
   interact('.drop-zone').dropzone({
     accept: '.drag-item',
