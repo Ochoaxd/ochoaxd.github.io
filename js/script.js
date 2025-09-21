@@ -55,7 +55,6 @@ function generateWasteItems() {
   selectedItems.forEach((item, index) => {
     const itemElement = document.createElement('div');
     itemElement.className = 'drag-item bg-white rounded-lg p-4 shadow-md cursor-grab text-center border-2 border-gray-200 hover:border-gray-300 transition-colors';
-    itemElement.draggable = true;
     itemElement.dataset.type = item.type;
     itemElement.dataset.id = index;
     itemElement.innerHTML = `<div class="text-3xl mb-2">${item.emoji}</div><p class="text-sm font-medium text-gray-700">${item.name}</p>`;
@@ -63,51 +62,60 @@ function generateWasteItems() {
   });
 }
 
+// 👉 Aquí cambiamos a interact.js
 function setupDragAndDrop() {
-  document.querySelectorAll('.drag-item').forEach(item => {
-    item.addEventListener('dragstart', handleDragStart);
-    item.addEventListener('dragend', handleDragEnd);
-  });
-  document.querySelectorAll('.drop-zone').forEach(zone => {
-    zone.addEventListener('dragover', e => e.preventDefault());
-    zone.addEventListener('dragenter', e => e.target.classList.add('drag-over'));
-    zone.addEventListener('dragleave', e => e.target.classList.remove('drag-over'));
-    zone.addEventListener('drop', handleDrop);
-  });
-}
-
-function handleDragStart(e) {
-  e.dataTransfer.setData('text/plain', e.target.dataset.id);
-  e.target.style.opacity = '0.5';
-}
-function handleDragEnd(e) { e.target.style.opacity = '1'; }
-
-function handleDrop(e) {
-  e.preventDefault();
-  e.target.classList.remove('drag-over');
-  const draggedId = e.dataTransfer.getData('text/plain');
-  const draggedElement = document.querySelector(`[data-id="${draggedId}"]`);
-  const dropZone = e.target.closest('.drop-zone');
-  if (draggedElement && dropZone) {
-    gameAttempts++;
-    if (draggedElement.dataset.type === dropZone.dataset.type) {
-      gameScore++;
-      dropZone.classList.add('correct-drop');
-      draggedElement.remove();
-      setTimeout(() => dropZone.classList.remove('correct-drop'), 600);
-      if (document.querySelectorAll('.drag-item').length === 1) {
-        setTimeout(() => {
-          alert(`¡Excelente! Has completado el juego con ${gameScore} de ${gameAttempts} intentos correctos.`);
-          initGame();
-        }, 700);
+  interact('.drag-item').draggable({
+    listeners: {
+      move(event) {
+        const target = event.target;
+        const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+        const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+        target.style.transform = `translate(${x}px, ${y}px)`;
+        target.setAttribute('data-x', x);
+        target.setAttribute('data-y', y);
       }
-    } else {
-      dropZone.classList.add('wrong-drop');
-      setTimeout(() => dropZone.classList.remove('wrong-drop'), 600);
     }
-    updateGameScore();
-  }
+  });
+
+  interact('.drop-zone').dropzone({
+    accept: '.drag-item',
+    overlap: 0.3,
+    ondrop(event) {
+      const draggedElement = event.relatedTarget;
+      const dropZone = event.target;
+
+      gameAttempts++;
+
+      if (draggedElement.dataset.type === dropZone.dataset.type) {
+        // ✅ Correcto
+        gameScore++;
+        dropZone.classList.add('correct-drop');
+        draggedElement.remove();
+
+        setTimeout(() => dropZone.classList.remove('correct-drop'), 600);
+
+        if (document.querySelectorAll('.drag-item').length === 0) {
+          setTimeout(() => {
+            alert(`¡Excelente! Has completado el juego con ${gameScore} de ${gameAttempts} intentos correctos.`);
+            initGame();
+          }, 700);
+        }
+      } else {
+        // ❌ Incorrecto
+        dropZone.classList.add('wrong-drop');
+        setTimeout(() => dropZone.classList.remove('wrong-drop'), 600);
+
+        // Regresar el objeto a su lugar
+        draggedElement.style.transform = 'translate(0px, 0px)';
+        draggedElement.removeAttribute('data-x');
+        draggedElement.removeAttribute('data-y');
+      }
+
+      updateGameScore();
+    }
+  });
 }
+
 function updateGameScore() {
   document.getElementById('score').textContent = gameScore;
   document.getElementById('attempts').textContent = gameAttempts;
