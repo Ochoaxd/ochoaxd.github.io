@@ -64,13 +64,10 @@ function generateWasteItems() {
 
 // 👉 Aquí cambiamos a interact.js
 function setupDragAndDrop() {
-  // -------------------- PC (Drag & Drop Nativo) --------------------
   document.querySelectorAll('.drag-item').forEach(item => {
-    item.setAttribute('draggable', true);
     item.addEventListener('dragstart', handleDragStart);
     item.addEventListener('dragend', handleDragEnd);
   });
-
   document.querySelectorAll('.drop-zone').forEach(zone => {
     zone.addEventListener('dragover', e => e.preventDefault());
     zone.addEventListener('dragenter', e => e.target.classList.add('drag-over'));
