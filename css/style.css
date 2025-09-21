@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+.drag-item {
+    transition: all 0.3s ease;
+    cursor: grab;
+}
+
+.drag-item:active {
+    cursor: grabbing;
+    transform: scale(1.05);
+}
+
+.drop-zone {
+    transition: all 0.3s ease;
+}
+
+.drop-zone.drag-over {
+    transform: scale(1.02);
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.5);
+}
+
+.correct-drop {
+    animation: correctDrop 0.6s ease;
+}
+
+.wrong-drop {
+    animation: wrongDrop 0.6s ease;
+}
+
+@keyframes correctDrop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); background-color: #dcfce7; }
+    100% { transform: scale(1); }
+}
+
+@keyframes wrongDrop {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-10px); background-color: #fef2f2; }
+    75% { transform: translateX(10px); }
+    100% { transform: translateX(0); }
+}
+
+.page-transition {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.floating {
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
