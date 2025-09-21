@@ -75,6 +75,81 @@ function setupDragAndDrop() {
     zone.addEventListener('drop', handleDrop);
   });
 }
+let draggedElement = null;
+
+document.querySelectorAll('.drag-item').forEach(item => {
+  item.addEventListener('touchstart', (e) => {
+    draggedElement = item;
+    draggedElement.classList.add("opacity-50");
+  });
+
+  item.addEventListener('touchmove', (e) => {
+    if (!draggedElement) return;
+
+    const touch = e.touches[0];
+    draggedElement.style.position = "absolute";
+    draggedElement.style.left = (touch.pageX - 50) + "px";
+    draggedElement.style.top = (touch.pageY - 50) + "px";
+    draggedElement.style.zIndex = 1000;
+  });
+
+  item.addEventListener('touchend', (e) => {
+    if (!draggedElement) return;
+
+    const touch = e.changedTouches[0];
+    const dropZones = document.querySelectorAll('.drop-zone');
+    let dropped = false;
+
+    dropZones.forEach(zone => {
+      const rect = zone.getBoundingClientRect();
+      if (
+        touch.clientX >= rect.left &&
+        touch.clientX <= rect.right &&
+        touch.clientY >= rect.top &&
+        touch.clientY <= rect.bottom
+      ) {
+        // Simulamos el drop original
+        if (draggedElement.dataset.type === zone.dataset.type) {
+          gameScore++;
+          zone.classList.add('correct-drop');
+          draggedElement.remove();
+          setTimeout(() => zone.classList.remove('correct-drop'), 600);
+        } else {
+          zone.classList.add('wrong-drop');
+          setTimeout(() => zone.classList.remove('wrong-drop'), 600);
+
+          // devolver al lugar original
+          draggedElement.style.position = "";
+          draggedElement.style.left = "";
+          draggedElement.style.top = "";
+          draggedElement.style.zIndex = "";
+        }
+        dropped = true;
+      }
+    });
+
+    if (!dropped) {
+      // si no se soltó en ninguna zona, volver a su lugar
+      draggedElement.style.position = "";
+      draggedElement.style.left = "";
+      draggedElement.style.top = "";
+      draggedElement.style.zIndex = "";
+    }
+
+    draggedElement.classList.remove("opacity-50");
+    draggedElement = null;
+
+    gameAttempts++;
+    updateGameScore();
+
+    if (document.querySelectorAll('.drag-item').length === 0) {
+      setTimeout(() => {
+        alert(`¡Excelente! Has completado el juego con ${gameScore} de ${gameAttempts} intentos correctos.`);
+        initGame();
+      }, 700);
+    }
+  });
+});
 
 function handleDragStart(e) {
   e.dataTransfer.setData('text/plain', e.target.dataset.id);
