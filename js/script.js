@@ -55,6 +55,7 @@ function generateWasteItems() {
   selectedItems.forEach((item, index) => {
     const itemElement = document.createElement('div');
     itemElement.className = 'drag-item bg-white rounded-lg p-4 shadow-md cursor-grab text-center border-2 border-gray-200 hover:border-gray-300 transition-colors';
+    itemElement.draggable = true;
     itemElement.dataset.type = item.type;
     itemElement.dataset.id = index;
     itemElement.innerHTML = `<div class="text-3xl mb-2">${item.emoji}</div><p class="text-sm font-medium text-gray-700">${item.name}</p>`;
@@ -62,7 +63,6 @@ function generateWasteItems() {
   });
 }
 
-// 👉 Aquí cambiamos a interact.js
 function setupDragAndDrop() {
   document.querySelectorAll('.drag-item').forEach(item => {
     item.addEventListener('dragstart', handleDragStart);
@@ -74,124 +74,40 @@ function setupDragAndDrop() {
     zone.addEventListener('dragleave', e => e.target.classList.remove('drag-over'));
     zone.addEventListener('drop', handleDrop);
   });
+}
 
-  // -------------------- Móvil (Eventos Touch) --------------------
-  let draggedElement = null;
+function handleDragStart(e) {
+  e.dataTransfer.setData('text/plain', e.target.dataset.id);
+  e.target.style.opacity = '0.5';
+}
+function handleDragEnd(e) { e.target.style.opacity = '1'; }
 
-  document.querySelectorAll('.drag-item').forEach(item => {
-    item.addEventListener('touchstart', (e) => {
-      draggedElement = item;
-      draggedElement.classList.add("opacity-50");
-    });
-
-    item.addEventListener('touchmove', (e) => {
-      if (!draggedElement) return;
-
-      const touch = e.touches[0];
-      draggedElement.style.position = "absolute";
-      draggedElement.style.left = (touch.pageX - 50) + "px";
-      draggedElement.style.top = (touch.pageY - 50) + "px";
-      draggedElement.style.zIndex = 1000;
-    });
-
-    item.addEventListener('touchend', (e) => {
-      if (!draggedElement) return;
-
-      const touch = e.changedTouches[0];
-      const dropZones = document.querySelectorAll('.drop-zone');
-      let dropped = false;
-
-      dropZones.forEach(zone => {
-        const rect = zone.getBoundingClientRect();
-        if (
-          touch.clientX >= rect.left &&
-          touch.clientX <= rect.right &&
-          touch.clientY >= rect.top &&
-          touch.clientY <= rect.bottom
-        ) {
-          // Simulamos el drop original
-          if (draggedElement.dataset.type === zone.dataset.type) {
-            gameScore++;
-            zone.classList.add('correct-drop');
-            draggedElement.remove();
-            setTimeout(() => zone.classList.remove('correct-drop'), 600);
-          } else {
-            zone.classList.add('wrong-drop');
-            setTimeout(() => zone.classList.remove('wrong-drop'), 600);
-
-            // devolver al lugar original
-            draggedElement.style.position = "";
-            draggedElement.style.left = "";
-            draggedElement.style.top = "";
-            draggedElement.style.zIndex = "";
-          }
-          dropped = true;
-        }
-      });
-
-      if (!dropped) {
-        // si no se soltó en ninguna zona, volver a su lugar
-        draggedElement.style.position = "";
-        draggedElement.style.left = "";
-        draggedElement.style.top = "";
-        draggedElement.style.zIndex = "";
-      }
-
-      draggedElement.classList.remove("opacity-50");
-      draggedElement = null;
-
-      gameAttempts++;
-      updateGameScore();
-
-      if (document.querySelectorAll('.drag-item').length === 0) {
+function handleDrop(e) {
+  e.preventDefault();
+  e.target.classList.remove('drag-over');
+  const draggedId = e.dataTransfer.getData('text/plain');
+  const draggedElement = document.querySelector(`[data-id="${draggedId}"]`);
+  const dropZone = e.target.closest('.drop-zone');
+  if (draggedElement && dropZone) {
+    gameAttempts++;
+    if (draggedElement.dataset.type === dropZone.dataset.type) {
+      gameScore++;
+      dropZone.classList.add('correct-drop');
+      draggedElement.remove();
+      setTimeout(() => dropZone.classList.remove('correct-drop'), 600);
+      if (document.querySelectorAll('.drag-item').length === 1) {
         setTimeout(() => {
           alert(`¡Excelente! Has completado el juego con ${gameScore} de ${gameAttempts} intentos correctos.`);
           initGame();
         }, 700);
       }
-    });
-  });
-
-
-  interact('.drop-zone').dropzone({
-    accept: '.drag-item',
-    overlap: 0.3,
-    ondrop(event) {
-      const draggedElement = event.relatedTarget;
-      const dropZone = event.target;
-
-      gameAttempts++;
-
-      if (draggedElement.dataset.type === dropZone.dataset.type) {
-        // ✅ Correcto
-        gameScore++;
-        dropZone.classList.add('correct-drop');
-        draggedElement.remove();
-
-        setTimeout(() => dropZone.classList.remove('correct-drop'), 600);
-
-        if (document.querySelectorAll('.drag-item').length === 0) {
-          setTimeout(() => {
-            alert(`¡Excelente! Has completado el juego con ${gameScore} de ${gameAttempts} intentos correctos.`);
-            initGame();
-          }, 700);
-        }
-      } else {
-        // ❌ Incorrecto
-        dropZone.classList.add('wrong-drop');
-        setTimeout(() => dropZone.classList.remove('wrong-drop'), 600);
-
-        // Regresar el objeto a su lugar
-        draggedElement.style.transform = 'translate(0px, 0px)';
-        draggedElement.removeAttribute('data-x');
-        draggedElement.removeAttribute('data-y');
-      }
-
-      updateGameScore();
+    } else {
+      dropZone.classList.add('wrong-drop');
+      setTimeout(() => dropZone.classList.remove('wrong-drop'), 600);
     }
-  });
+    updateGameScore();
+  }
 }
-
 function updateGameScore() {
   document.getElementById('score').textContent = gameScore;
   document.getElementById('attempts').textContent = gameAttempts;
